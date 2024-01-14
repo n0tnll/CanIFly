@@ -1,7 +1,8 @@
-package com.shv.canifly
+package com.shv.canifly.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shv.canifly.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
