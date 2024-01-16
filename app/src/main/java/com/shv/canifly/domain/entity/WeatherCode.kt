@@ -1,32 +1,190 @@
 package com.shv.canifly.domain.entity
 
-enum class WeatherCode(val code: Int) {
-    CLEAR_SKY(0),
-    MAINLY_CLEAR(1),
-    PARTLY_CLOUDY(2),
-    OVERCAST(3),
-    FOG(45),
-    RIME_FOG(48),
-    DRIZZLE_LIGHT(51),
-    DRIZZLE_MODERATE(53),
-    DRIZZLE_DENSE_INTENSITY(55),
-    FREEZING_DRIZZLE_LIGHT(56),
-    FREEZING_DRIZZLE_DENSE_INTENSITY(57),
-    RAIN_SLIGHT(61),
-    RAIN_MODERATE(63),
-    RAIN_HEAVY_INTENSITY(65),
-    FREEZING_RAIN_LIGHT(66),
-    FREEZING_RAIN_HEAVY_INTENSITY(67),
-    SNOW_FALL_SLIGHT(71),
-    SNOW_FALL_MODERATE(73),
-    SNOW_FALL_HEAVY_INTENSITY(75),
-    SNOW_GRAINS(77),
-    RAIN_SHOWERS_SLIGHT(80),
-    RAIN_SHOWERS_MODERATE(81),
-    RAIN_SHOWERS_VIOLENT(82),
-    SNOW_SHOWERS_SLIGHT(85),
-    SNOW_SHOWERS_HEAVY(86),
-    THUNDERSTORM_SLIGHT_OR_MODERATE(95),
-    THUNDERSTORM_WITH_HAIL_SLIGHT(96),
-    THUNDERSTORM_WITH_HAIL_HEAVY(99)
+import androidx.annotation.DrawableRes
+import com.shv.canifly.R
+
+sealed class WeatherType(
+    val weatherDesc: String,
+    @DrawableRes val iconRes: Int
+) {
+
+    data object ClearSky : WeatherType(
+        weatherDesc = "Clear sky",
+        iconRes = R.drawable.sunny_day
+    )
+
+    data object MainlyClear : WeatherType(
+        weatherDesc = "Mainly clear",
+        iconRes = R.drawable.mainly_clear_day
+    )
+
+    data object PartlyCloudy : WeatherType(
+        weatherDesc = "Partly cloudy",
+        iconRes = R.drawable.partly_cloudy_day
+    )
+
+    data object Overcast : WeatherType(
+        weatherDesc = "Overcast",
+        iconRes = R.drawable.overcast_day
+    )
+
+    data object Fog : WeatherType(
+        weatherDesc = "Fog",
+        iconRes = R.drawable.fog_day
+    )
+
+    data object RimeFog : WeatherType(
+        weatherDesc = "Rime fog",
+        iconRes = R.drawable.freezing_fog_day
+    )
+
+    data object DrizzleLight : WeatherType(
+        weatherDesc = "Drizzle light",
+        iconRes = R.drawable.light_drizzle_day
+    )
+
+    data object DrizzleModerate : WeatherType(
+        weatherDesc = "Drizzle moderate",
+        iconRes = R.drawable.light_drizzle_day
+    )
+
+    data object DrizzleDenseIntensity : WeatherType(
+        weatherDesc = "Drizzle dense intensity",
+        iconRes = R.drawable.light_drizzle_day
+    )
+
+    data object FreezingDrizzleLight : WeatherType(
+        weatherDesc = "Freezing drizzle light",
+        iconRes = R.drawable.freezing_drizzle_day
+    )
+
+    data object FreezingDrizzleDenseIntensity : WeatherType(
+        weatherDesc = "Freezing drizzle dense intensity",
+        iconRes = R.drawable.heavy_freezing_drizzle_day
+    )
+
+    data object RainSlight : WeatherType(
+        weatherDesc = "Rain slight",
+        iconRes = R.drawable.light_rain_day
+    )
+
+    data object RainModerate : WeatherType(
+        weatherDesc = "Rain moderate",
+        iconRes = R.drawable.moderate_rain_day
+    )
+
+    data object RainHeavyIntensity : WeatherType(
+        weatherDesc = "Rain heavy intensity",
+        iconRes = R.drawable.heavy_rain_day
+    )
+
+    data object FreezingRainLight : WeatherType(
+        weatherDesc = "Freezing rain light",
+        iconRes = R.drawable.light_freezing_rain_day
+    )
+
+    data object FreezingRainHeavyIntensity : WeatherType(
+        weatherDesc = "Freezing rain heavy intensity",
+        iconRes = R.drawable.moderate_or_heavy_freezing_rain_day
+    )
+
+    data object SnowFallSlight : WeatherType(
+        weatherDesc = "Snow fall slight",
+        iconRes = R.drawable.light_snow_day
+    )
+
+    data object SnowFallModerate : WeatherType(
+        weatherDesc = "Snow fall moderate",
+        iconRes = R.drawable.moderate_snow_day
+    )
+
+    data object SnowFallHeavy : WeatherType(
+        weatherDesc = "Snow fall heavy",
+        iconRes = R.drawable.heavy_snow_day
+    )
+
+    data object SnowGrains : WeatherType(
+        weatherDesc = "Snow grains",
+        iconRes = R.drawable.ice_pellets_day
+    )
+
+    data object RainShowersSlight : WeatherType(
+        weatherDesc = "Rain showers slight",
+        iconRes = R.drawable.light_rain_shower_day
+    )
+
+    data object RainShowersModerate : WeatherType(
+        weatherDesc = "Rain showers moderate",
+        iconRes = R.drawable.moderate_or_heavy_rain_shower_day
+    )
+
+    data object RainShowersViolent : WeatherType(
+        weatherDesc = "Rain showers violent",
+        iconRes = R.drawable.torrential_rain_shower_day
+    )
+
+    data object SnowShowersSlight : WeatherType(
+        weatherDesc = "Snow showers slight",
+        iconRes = R.drawable.light_snow_showers_day
+    )
+
+    data object SnowShowersHeavy : WeatherType(
+        weatherDesc = "Snow showers heavy",
+        iconRes = R.drawable.moderate_or_heavy_snow_showers_day
+    )
+
+    data object ThunderstormSlightOrModerate : WeatherType(
+        weatherDesc = "Thunderstorm slight or moderate",
+        iconRes = R.drawable.patchy_light_rain_with_thunder_day
+    )
+
+    data object ThunderstormWithSlight : WeatherType(
+        weatherDesc = "Thunderstorm with slight",
+        iconRes = R.drawable.patchy_light_rain_with_thunder_day
+    )
+
+    data object ThunderstormWithHeavyHail : WeatherType(
+        weatherDesc = "Thunderstorm with heavy hail",
+        iconRes = R.drawable.moderate_or_heavy_rain_with_thunder_day
+    )
+
+
+    companion object {
+        fun fromWMO(code: Int): WeatherType {
+            return when (code) {
+                0 -> ClearSky
+                1 -> MainlyClear
+                2 -> PartlyCloudy
+                3 -> Overcast
+                45 -> Fog
+                48 -> RimeFog
+                51 -> DrizzleLight
+                53 -> DrizzleModerate
+                55 -> DrizzleDenseIntensity
+                56 -> FreezingDrizzleLight
+                57 -> FreezingDrizzleDenseIntensity
+                61 -> RainSlight
+                63 -> RainModerate
+                65 -> RainHeavyIntensity
+                66 -> FreezingRainLight
+                67 -> FreezingRainHeavyIntensity
+                71 -> SnowFallSlight
+                73 -> SnowFallModerate
+                75 -> SnowFallHeavy
+                77 -> SnowGrains
+                80 -> RainShowersSlight
+                81 -> RainShowersModerate
+                82 -> RainShowersViolent
+                85 -> SnowShowersSlight
+                86 -> SnowShowersHeavy
+                95 -> ThunderstormSlightOrModerate
+                96 -> ThunderstormWithSlight
+                99 -> ThunderstormWithHeavyHail
+                else -> {
+                    throw RuntimeException("Unknown weather code: $code")
+                }
+            }
+        }
+    }
 }
+

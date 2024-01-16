@@ -9,7 +9,7 @@ data class CurrentWeather(
     val rain: Double,
     val showers: Double,
     val snowfall: Double,
-    val weatherCode: WeatherCode,
+    val weatherCode: WeatherType,
     val cloudCover: Int,
     val windSpeed10M: Double,
     val windDirection10M: Int,
