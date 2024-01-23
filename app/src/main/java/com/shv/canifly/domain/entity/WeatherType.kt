@@ -1,12 +1,15 @@
 package com.shv.canifly.domain.entity
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.shv.canifly.R
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 sealed class WeatherType(
     val weatherDesc: String,
     @DrawableRes val iconRes: Int
-) {
+) : Parcelable {
 
     data object ClearSky : WeatherType(
         weatherDesc = "Clear sky",

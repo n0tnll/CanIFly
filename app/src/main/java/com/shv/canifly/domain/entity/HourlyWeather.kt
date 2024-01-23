@@ -1,21 +1,22 @@
 package com.shv.canifly.domain.entity
 
+import java.time.LocalDateTime
+
 data class HourlyWeather(
-    val times: List<Long>,
-    val temperatures2m: List<Double>,
-    val apparentTemperatures: List<Double>,
-    val precipitationProbability: List<Int>,
-    val precipitation: List<Double>,
-    val rain: List<Double>,
-    val showers: List<Double>,
-    val snowfall: List<Double>,
-    val snowDepth: List<Double>,
-    val weatherCode: List<WeatherType>,
-    val cloudCover: List<Int>,
-    val cloudCoverLow: List<Int>,
-    val visibility: List<Int>,
-    val windSpeed10m: List<Double>,
-    val windDirection10m: List<Double>,
-    val windGusts10m: List<Double>,
-    val isDay: Boolean
+    val time: LocalDateTime,
+    val temperature2m: Double,
+    val apparentTemperature: Double,
+    val precipitationProbability: Int,
+    val precipitation: Double,
+    val windSpeed10m: Double,
+    val windDirection10m: Int,
+    val windGusts10m: Double,
+    val visibility: Int,
+    val cloudCover: Int,
+    val cloudCoverLow: Int,
+    val rain: Double,
+    val showers: Double,
+    val snowfall: Double,
+    val weatherType: WeatherType,
+    val isDay: Int
 )
