@@ -70,6 +70,8 @@ dependencies {
     implementation("com.google.dagger:dagger:2.50")
     ksp("com.google.dagger:dagger-compiler:2.50")
 
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 }
