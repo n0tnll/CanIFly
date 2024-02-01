@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/conditionsFragment"
+        android:icon="@drawable/ic_condition_nav"
+        android:enabled="true"
+        android:title="Conditions" />
+    <item
+        android:id="@+id/forecastFragment"
+        android:icon="@drawable/ic_forecast_nav"
+        android:enabled="true"
+        android:title="Forecast" />
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ic_map_nav"
+        android:enabled="true"
+        android:title="Map" />
+    <item
+        android:id="@+id/watchingDateFragment"
+        android:icon="@drawable/ic_observing_nav"
+        android:enabled="true"
+        android:title="Watching date" />
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/conditionsFragment">
+
+    <fragment
+        android:id="@+id/conditionsFragment"
+        android:name="com.shv.canifly.presentation.fragments.ConditionsFragment"
+        android:label="fragment_conditions"
+        tools:layout="@layout/fragment_conditions" />
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="com.shv.canifly.presentation.fragments.ForecastFragment"
+        android:label="fragment_forecast"
+        tools:layout="@layout/fragment_forecast" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.shv.canifly.presentation.fragments.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/watchingDateFragment"
+        android:name="com.shv.canifly.presentation.fragments.WatchingDateFragment"
+        android:label="fragment_watching_date"
+        tools:layout="@layout/fragment_watching_date" />
+</navigation>

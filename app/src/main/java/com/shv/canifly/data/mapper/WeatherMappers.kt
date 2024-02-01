@@ -1,34 +1,43 @@
 package com.shv.canifly.data.mapper
 
+import android.util.Log
 import com.shv.canifly.data.network.models.WeatherDataDto
 import com.shv.canifly.domain.entity.DailyWeather
 import com.shv.canifly.domain.entity.HourlyWeather
 import com.shv.canifly.domain.entity.WeatherInfo
 import com.shv.canifly.domain.entity.WeatherType
 import com.shv.canifly.domain.entity.WeatherUnits
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 private data class IndexedHourlyWeather(
     val index: Int,
     val hourlyWeather: HourlyWeather
 )
 
-fun WeatherDataDto.mapDailyWeatherMap(): Map<Int, List<DailyWeather>> {
-    return dailyWeatherDto.time.mapIndexed { index, day ->
-        val precipitationSum = dailyWeatherDto.precipitationSum[index]
+fun WeatherDataDto.mapDailyWeatherMap(): List<DailyWeather>{
+    val map = dailyWeatherDto.time.mapIndexed { index, day ->
+        val precipitationProbabilityMax = dailyWeatherDto.precipitationProbabilityMax[index]
         val sunrise = dailyWeatherDto.sunrise[index]
         val sunset = dailyWeatherDto.sunset[index]
+        val weatherCode = dailyWeatherDto.weatherCode[index]
+        val temperatureMax = dailyWeatherDto.temperatureMax[index]
+        val temperatureMin = dailyWeatherDto.temperatureMin[index]
 
         DailyWeather(
-            day = LocalDateTime.parse(day, DateTimeFormatter.ISO_DATE_TIME),
-            precipitationSum = precipitationSum,
-            sunrise = sunrise,
-            sunset = sunset
+            day = LocalDate.parse(day, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())),
+            precipitationProbabilityMax = precipitationProbabilityMax,
+            temperatureMax = temperatureMax,
+            temperatureMin = temperatureMin,
+            weatherType = WeatherType.fromWMO(weatherCode),
+            sunrise = LocalDateTime.parse(sunrise, DateTimeFormatter.ISO_DATE_TIME),
+            sunset = LocalDateTime.parse(sunset, DateTimeFormatter.ISO_DATE_TIME)
         )
-    }.groupBy {
-        it.day.dayOfMonth
     }
+    return map
 }
 
 fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
@@ -70,7 +79,7 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
         IndexedHourlyWeather(
             index = index,
             hourlyWeather = HourlyWeather(
-                time = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME),
+                time = LocalDateTime.parse(time, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 temperature2m = temperature2m,
                 apparentTemperature = apparentTemperature,
                 precipitationProbability = precipitationProbability,
@@ -78,7 +87,7 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
                 windSpeed10m = windSpeed10m,
                 windDirection10m = windDirection10m,
                 windGusts10m = windGusts10m,
-                visibility = visibility.toInt(),
+                visibility = (visibility / 1000).toInt() ,
                 cloudCover = cloudCover,
                 cloudCoverLow = cloudCoverLow,
                 rain = rain,
@@ -119,14 +128,16 @@ fun WeatherDataDto.toWeatherInfo(): WeatherInfo {
     val units = mapToWeatherUnit()
     val now = LocalDateTime.now()
     val currentWeatherData = hourlyWeatherData[0]?.find {
-        val hour = if (now.minute < 30) now.hour else now.hour.inc()
+        val hour = if (now.minute < 30) now.hour else now.hour + 1
         it.time.hour == hour
     }
+    val currentDailyWeather = dailyWeatherData[0]
 
     return WeatherInfo(
         weatherPerDayData = hourlyWeatherData,
         weatherDailyData = dailyWeatherData,
         currentWeatherData = currentWeatherData,
+        currentDailyWeatherData = currentDailyWeather,
         units = units
     )
 }

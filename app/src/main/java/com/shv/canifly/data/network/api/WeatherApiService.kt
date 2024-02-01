@@ -47,7 +47,8 @@ interface WeatherApiService {
                 "temperature_950hPa,temperature_925hPa,temperature_900hPa,windspeed_975hPa," +
                 "windspeed_950hPa,windspeed_925hPa,windspeed_900hPa,winddirection_975hPa," +
                 "winddirection_950hPa,winddirection_925hPa,winddirection_900hPa"
-        private const val PARAMS_DAILY = "sunrise,sunset,precipitation_sum"
+        private const val PARAMS_DAILY = "sunrise,sunset,precipitation_probability_max," +
+                "temperature_2m_max,temperature_2m_min,weather_code"
         private const val PARAMS_WIND_SPEED_UNIT = "ms"
         private const val PARAMS_TIMEZONE = "auto"
         private const val PARAMS_MODELS = "best_match"
