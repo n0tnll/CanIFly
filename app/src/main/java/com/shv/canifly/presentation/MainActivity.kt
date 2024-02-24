@@ -27,13 +27,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private val viewModel: WeatherConditionsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         requestLocationPermission()
-
+        viewModel.loadWeatherInfo()
         setupBottomNavigation()
     }
 

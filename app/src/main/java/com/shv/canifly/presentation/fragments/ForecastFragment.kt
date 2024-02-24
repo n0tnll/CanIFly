@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +35,7 @@ class ForecastFragment : Fragment() {
     private val dailyAdapter by lazy {
         DailyWeatherAdapter()
     }
-    private val viewModel: WeatherConditionsViewModel by viewModels()
+    private val viewModel: WeatherConditionsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +52,8 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadWeatherInfo()
+//        viewModel.loadWeatherInfo()
+        Log.d("viewmodelweather", "${this.javaClass.simpleName}: $viewModel")
         setupRecyclerView()
         observeViewModel()
     }

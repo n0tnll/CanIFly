@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +32,7 @@ class ConditionsFragment : Fragment() {
     private val binding: FragmentConditionsBinding
         get() = _binding ?: throw RuntimeException("FragmentConditionsBinding is null")
 
-    private val viewModel: WeatherConditionsViewModel by viewModels()
+    private val viewModel: WeatherConditionsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +54,7 @@ class ConditionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("ConditionsFragment", viewModel.toString())
-        viewModel.loadWeatherInfo()
+        Log.d("viewmodelweather", "${this.javaClass.simpleName}: $viewModel")
         observeViewModels()
     }
 
