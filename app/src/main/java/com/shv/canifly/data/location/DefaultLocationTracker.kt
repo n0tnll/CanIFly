@@ -44,7 +44,7 @@ class DefaultLocationTracker @Inject constructor(
             locationClient.lastLocation.apply {
                 if (isComplete) {
                     if (isSuccessful) {
-                    continuation.resume(result)
+                        continuation.resume(result)
                     } else {
                         continuation.resume(null)
                     }

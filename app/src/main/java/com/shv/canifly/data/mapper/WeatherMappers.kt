@@ -1,6 +1,5 @@
 package com.shv.canifly.data.mapper
 
-import android.util.Log
 import com.shv.canifly.data.network.models.WeatherDataDto
 import com.shv.canifly.domain.entity.DailyWeather
 import com.shv.canifly.domain.entity.HourlyWeather
@@ -9,7 +8,6 @@ import com.shv.canifly.domain.entity.WeatherType
 import com.shv.canifly.domain.entity.WeatherUnits
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -87,7 +85,7 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
                 windSpeed10m = windSpeed10m,
                 windDirection10m = windDirection10m,
                 windGusts10m = windGusts10m,
-                visibility = (visibility / 1000).toInt() ,
+                visibility = (visibility / 1000).toInt() ?: -1,
                 cloudCover = cloudCover,
                 cloudCoverLow = cloudCoverLow,
                 rain = rain,
