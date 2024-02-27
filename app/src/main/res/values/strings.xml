@@ -1,22 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Can I Fly</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">
         pk.eyJ1IjoiZW5kbm90ZTEwNDciLCJhIjoiY2xzM3ozemoxMTFyNDJrbnF2aDNoY3R5aiJ9.ZPl8Hj2BQzWQjfV0tGSf-A
     </string>
+    
+    <string name="value_with_units">%s %s</string>
+    <string name="high_low_temp">High: %s / Low: %s</string>
+    <string name="last_update">Last updated: %s</string>
+    <string name="sun">Sun</string>
+    <string name="wind">Wind</string>
+    <string name="gusts">Gusts</string>
+    <string name="wind_dir">Wind dir</string>
+    <string name="precip_prob">Precip Prob</string>
+    <string name="cloud_cover">Cloud Cover</string>
+    <string name="visibility">Visibility</string>
+    <string name="current_weather_now_descr">Current weather now</string>
 </resources>

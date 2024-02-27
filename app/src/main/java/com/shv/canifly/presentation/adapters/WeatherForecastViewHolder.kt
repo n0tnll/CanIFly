@@ -20,7 +20,10 @@ class HourlyForecastViewHolder(
         with(binding) {
             with(forecast) {
                 tvTemperature.text = "${temperature2m} °"
-                ivWeatherNow.setImageResource(weatherType.iconRes)
+                if (isDay == 0)
+                    ivWeatherNow.setImageResource(weatherType.iconResNight)
+                else
+                    ivWeatherNow.setImageResource(weatherType.iconResDay)
                 tvCurrentTime.text =
                     time.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()))
             }
@@ -54,7 +57,7 @@ class DailyForecastViewHolder(
                     tvPrecipProb.text = precipitationProbabilityMax.toString() + "%"
                 else
                     tvPrecipProb.text = ""
-                ivWeatherNow.setImageResource(weatherType.iconRes)
+                ivWeatherNow.setImageResource(weatherType.iconResDay)
                 tvTemperatures.text = "$temperatureMin°/$temperatureMax°"
             }
         }

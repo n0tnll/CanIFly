@@ -2,20 +2,14 @@ package com.shv.canifly.presentation
 
 import android.Manifest
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.shv.canifly.R
 import com.shv.canifly.databinding.ActivityMainBinding
-import com.shv.canifly.presentation.fragments.ConditionsFragment
-import com.shv.canifly.presentation.fragments.ForecastFragment
-import com.shv.canifly.presentation.fragments.MapFragment
-import com.shv.canifly.presentation.fragments.WatchingDateFragment
 import com.shv.canifly.presentation.viewmodels.WeatherConditionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         requestLocationPermission()
-        viewModel.loadWeatherInfo()
         setupBottomNavigation()
     }
 
@@ -42,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-//            navigateFragments(ConditionsFragment.newInstance())
+            viewModel.loadWeatherInfo()
         }
         permissionLauncher.launch(
             arrayOf(
