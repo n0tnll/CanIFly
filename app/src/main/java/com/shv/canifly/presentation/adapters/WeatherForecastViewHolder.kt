@@ -10,6 +10,7 @@ import com.shv.canifly.domain.entity.HourlyWeather
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.roundToInt
 
 
 class HourlyForecastViewHolder(
@@ -19,7 +20,7 @@ class HourlyForecastViewHolder(
     fun bind(forecast: HourlyWeather) {
         with(binding) {
             with(forecast) {
-                tvTemperature.text = "${temperature2m} °"
+                tvTemperature.text = "${temperature2m.roundToInt()} °"
                 if (isDay == 0)
                     ivWeatherNow.setImageResource(weatherType.iconResNight)
                 else
@@ -58,7 +59,7 @@ class DailyForecastViewHolder(
                 else
                     tvPrecipProb.text = ""
                 ivWeatherNow.setImageResource(weatherType.iconResDay)
-                tvTemperatures.text = "$temperatureMin°/$temperatureMax°"
+                tvTemperatures.text = "${temperatureMin.roundToInt()}°/${temperatureMax.roundToInt()}°"
             }
         }
     }

@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.LocalTime
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ConditionsFragment : Fragment() {
@@ -124,7 +125,7 @@ class ConditionsFragment : Fragment() {
             with(binding) {
                 progressBar.visibility = View.GONE
                 tvTemperature.text = getStringValueWithUnits(
-                    it.temperature2m,
+                    it.temperature2m.roundToInt(),
                     units.temperature
                 )
                 tvLastWeatherUpdate.text = String.format(
@@ -139,11 +140,11 @@ class ConditionsFragment : Fragment() {
                     ivWeatherNow.setImageResource(it.weatherType.iconResDay)
 
                 tvWindSpeed.text = getStringValueWithUnits(
-                    it.windSpeed10m,
+                    it.windSpeed10m.roundToInt(),
                     units.windSpeed
                 )
                 tvWindGusts.text = getStringValueWithUnits(
-                    it.windGusts10m,
+                    it.windGusts10m.roundToInt(),
                     units.windSpeed
                 )
                 tvWindDir.text = getStringValueWithUnits(
@@ -172,11 +173,11 @@ class ConditionsFragment : Fragment() {
                 tvMinMaxTemperature.text = String.format(
                     requireContext().getString(R.string.high_low_temp),
                     getStringValueWithUnits(
-                        it.temperatureMax,
+                        it.temperatureMax.roundToInt(),
                         units.temperature
                     ),
                     getStringValueWithUnits(
-                        it.temperatureMin,
+                        it.temperatureMin.roundToInt(),
                         units.temperature
                     )
                 )
