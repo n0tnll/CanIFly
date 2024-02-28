@@ -99,8 +99,8 @@ class ConditionsFragment : Fragment() {
     private fun setCurrentWeatherConditions(
         weatherInfo: WeatherInfo?
     ) {
-        var hourlyConditions: HourlyWeather? = null
-        var dailyConditions: DailyWeather? = null
+        var hourlyConditions: HourlyWeather?
+        var dailyConditions: DailyWeather?
         weatherInfo?.let { wI ->
             if (chosenDay == DEFAULT_CHOSEN_DAY) {
                 hourlyConditions = wI.weatherPerDayData[chosenDay]?.get(chosenHour)
@@ -230,8 +230,8 @@ class ConditionsFragment : Fragment() {
         daysList.clear()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
         clearList()
     }
 

@@ -150,5 +150,4 @@ dependencies {
     implementation("com.dji:dji-sdk-v5-aircraft:5.8.0")
     compileOnly("com.dji:dji-sdk-v5-aircraft-provided:5.8.0")
     implementation("com.dji:dji-sdk-v5-networkImp:5.8.0")
-
 }
