@@ -26,8 +26,8 @@ sealed class WeatherType(
 
     data object PartlyCloudy : WeatherType(
         weatherDesc = "Partly cloudy",
-        iconResDay = R.drawable.ic_mainly_clear_day,
-        iconResNight = R.drawable.ic_mainly_clear_night
+        iconResDay = R.drawable.ic_overcast_day,
+        iconResNight = R.drawable.ic_overcast_hight
     )
 
     data object Overcast : WeatherType(

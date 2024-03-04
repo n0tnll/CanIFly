@@ -1,5 +1,9 @@
 package com.shv.canifly.data.extensions
 
+import android.content.Context
+import com.shv.canifly.R
+import com.shv.canifly.domain.entity.DailyWeather
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -22,3 +26,21 @@ fun LocalDate.shortDayOfWeek(): String {
         )
     )
 }
+
+fun LocalDate.detailedDayString(): String {
+    return  format(
+        DateTimeFormatter.ofPattern(
+            "EEEE yyyy.MM.dd",
+            Locale.getDefault()
+        )
+    )
+}
+
+fun DayOfWeek.toNormalDayName(): String {
+    return toString().lowercase().replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+    }
+}
+
+fun DailyWeather.getDayName(currentDay: String, context: Context): CharSequence =
+    if (LocalDate.now().dayOfMonth == day.dayOfMonth) context.getString(R.string.today) else currentDay

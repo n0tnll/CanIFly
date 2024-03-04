@@ -11,32 +11,20 @@
         android:id="@+id/tv_current_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hourly forecast"
+        android:text="Detailed forecast"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_hourly_weather"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_current_day"
-        tools:listitem="@layout/hourly_weather_item" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_daily_forecast"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_hourly_weather"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_day"
         tools:listitem="@layout/daily_weather_item" />
 
     <ProgressBar

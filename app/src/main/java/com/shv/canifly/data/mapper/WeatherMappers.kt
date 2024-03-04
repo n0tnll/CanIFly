@@ -16,7 +16,7 @@ private data class IndexedHourlyWeather(
     val hourlyWeather: HourlyWeather
 )
 
-fun WeatherDataDto.mapDailyWeatherMap(): List<DailyWeather>{
+fun WeatherDataDto.mapDailyWeatherMap(): List<DailyWeather> {
     val map = dailyWeatherDto.time.mapIndexed { index, day ->
         val precipitationProbabilityMax = dailyWeatherDto.precipitationProbabilityMax[index]
         val sunrise = dailyWeatherDto.sunrise[index]
@@ -24,15 +24,20 @@ fun WeatherDataDto.mapDailyWeatherMap(): List<DailyWeather>{
         val weatherCode = dailyWeatherDto.weatherCode[index]
         val temperatureMax = dailyWeatherDto.temperatureMax[index]
         val temperatureMin = dailyWeatherDto.temperatureMin[index]
+        val hourlyWeatherList = getHourlyWeatherPerDayList(index)
 
         DailyWeather(
-            day = LocalDate.parse(day, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())),
-            precipitationProbabilityMax = precipitationProbabilityMax,
+            day = LocalDate.parse(
+                day,
+                DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+            ),
+            precipProbMax = precipitationProbabilityMax,
             temperatureMax = temperatureMax,
             temperatureMin = temperatureMin,
             weatherType = WeatherType.fromWMO(weatherCode),
             sunrise = LocalDateTime.parse(sunrise, DateTimeFormatter.ISO_DATE_TIME),
-            sunset = LocalDateTime.parse(sunset, DateTimeFormatter.ISO_DATE_TIME)
+            sunset = LocalDateTime.parse(sunset, DateTimeFormatter.ISO_DATE_TIME),
+            hourlyWeather = hourlyWeatherList!!
         )
     }
     return map
@@ -42,7 +47,7 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
     return hourlyWeatherDto.time.mapIndexed { index, time ->
         val temperature2m = hourlyWeatherDto.temperature2m[index]
         val temperature120m = hourlyWeatherDto.temperature120m[index]
-        val temperature180m = hourlyWeatherDto.temperature180m[index]
+        //val temperature180m = hourlyWeatherDto.temperature180m[index]
         val temperature320m = hourlyWeatherDto.temperature320m[index]
         val temperature500m = hourlyWeatherDto.temperature500m[index]
         val temperature800m = hourlyWeatherDto.temperature800m[index]
@@ -50,15 +55,15 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
         val apparentTemperature = hourlyWeatherDto.apparentTemperature[index]
         val windSpeed10m = hourlyWeatherDto.windSpeed10m[index]
         val windSpeed120m = hourlyWeatherDto.windSpeed120m[index]
-        val windSpeed180m = hourlyWeatherDto.windSpeed180m[index]
-        val windSpeed320 = hourlyWeatherDto.windSpeed320[index]
+        //val windSpeed180m = hourlyWeatherDto.windSpeed180m[index]
+        val windSpeed320m = hourlyWeatherDto.windSpeed320[index]
         val windSpeed500m = hourlyWeatherDto.windSpeed500m[index]
         val windSpeed800m = hourlyWeatherDto.windSpeed800m[index]
         val windSpeed1000m = hourlyWeatherDto.windSpeed1000m[index]
         val weatherCode = hourlyWeatherDto.weatherCode[index]
         val windDirection10m = hourlyWeatherDto.windDirection10m[index]
         val windDirection120m = hourlyWeatherDto.windDirection120m[index]
-        val windDirection180m = hourlyWeatherDto.windDirection180m[index]
+        // val windDirection180m = hourlyWeatherDto.windDirection180m[index]
         val windDirection320m = hourlyWeatherDto.windDirection320m[index]
         val windDirection500m = hourlyWeatherDto.windDirection500m[index]
         val windDirection800m = hourlyWeatherDto.windDirection800m[index]
@@ -79,13 +84,23 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
             hourlyWeather = HourlyWeather(
                 time = LocalDateTime.parse(time, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 temperature2m = temperature2m,
+                temperature120m = temperature120m,
+                temperature320m = temperature320m,
+                temperature500m = temperature500m,
+                temperature800m = temperature800m,
+                temperature1000m = temperature1000m,
                 apparentTemperature = apparentTemperature,
                 precipitationProbability = precipitationProbability,
                 precipitation = precipitation,
                 windSpeed10m = windSpeed10m,
+                windSpeed120m = windSpeed120m,
+                windSpeed320m = windSpeed320m,
+                windSpeed500m = windSpeed500m,
+                windSpeed800m = windSpeed800m,
+                windSpeed1000m = windSpeed1000m,
                 windDirection10m = windDirection10m,
                 windGusts10m = windGusts10m,
-                visibility = (visibility / 1000).toInt() ?: -1,
+                visibility = (visibility / 1000).toInt(),
                 cloudCover = cloudCover,
                 cloudCoverLow = cloudCoverLow,
                 rain = rain,
@@ -102,6 +117,10 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
             indexedHourlyWeather.hourlyWeather
         }
     }
+}
+
+private fun WeatherDataDto.getHourlyWeatherPerDayList(index: Int): List<HourlyWeather>? {
+    return mapHourlyWeatherMap()[index]?.toList()
 }
 
 fun WeatherDataDto.mapToWeatherUnit(): WeatherUnits {

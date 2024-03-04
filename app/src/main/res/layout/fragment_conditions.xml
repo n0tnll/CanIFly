@@ -39,9 +39,9 @@
         android:id="@+id/tv_last_weather_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Last update: 15:00"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/cv_fly_status" />
@@ -57,6 +57,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_main_condition"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
@@ -103,12 +104,12 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@string/current_weather_now_descr"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_clear_day"
-                    android:contentDescription="@string/current_weather_now_descr" />
+                    tools:src="@drawable/ic_clear_day" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,6 +124,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_weather_condition_sun"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:cardCornerRadius="16dp"
@@ -173,6 +175,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_precip_prob"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginTop="8dp"
@@ -212,6 +215,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_cloud_cover"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginTop="8dp"
@@ -251,6 +255,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_gusts"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         app:cardCornerRadius="16dp"
@@ -289,6 +294,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_wind"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         app:cardCornerRadius="16dp"
@@ -327,6 +333,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_wind_dir"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         app:cardCornerRadius="16dp"
@@ -365,6 +372,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_weather_condition_visibility"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginTop="8dp"
@@ -436,73 +444,73 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/slider_time">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="24dp"
-            android:gravity="center"
             android:layout_weight="1"
-            android:text="Mon"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Mon" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_2"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Tue"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Tue" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_3"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Wed"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Wed" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_4"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Thu"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Thu" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_5"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Fri"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Fri" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_6"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Sat"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Sat" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_day_of_week_7"
-            android:layout_width="wrap_content"
-           android:layout_height="24dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:text="Sun"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:textAlignment="center"
+            tools:text="Sun" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

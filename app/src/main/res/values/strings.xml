@@ -6,8 +6,16 @@
     
     <string name="value_with_units">%s %s</string>
     <string name="high_low_temp">High: %s / Low: %s</string>
+    <string name="high_low_temp_short">%s°/%s°</string>
     <string name="last_update">Last updated: %s</string>
+    <string name="selected_time">Time: %s</string>
+    <string name="precib_prob_percent">%s%%</string>
+    <string name="value_wind">%s m/s</string>
+    <string name="value_temp">%s°C</string>
     <string name="sun">Sun</string>
+    <string name="sunrise">sunrise: %s</string>
+    <string name="sunset">sunset: %s</string>
+    <string name="today">Today</string>
     <string name="wind">Wind</string>
     <string name="gusts">Gusts</string>
     <string name="wind_dir">Wind dir</string>
@@ -15,4 +23,19 @@
     <string name="cloud_cover">Cloud Cover</string>
     <string name="visibility">Visibility</string>
     <string name="current_weather_now_descr">Current weather now</string>
+    <string name="altitude">Altitude</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="_1000m">1000m</string>
+    <string name="_800m">800m</string>
+    <string name="_500m">500m</string>
+    <string name="_300m">300m</string>
+    <string name="_100m">100m</string>
+    <string name="_10m">10m</string>
+    <string name="wind_profile">Wind Profile</string>
+    <string name="conditions">Conditions</string>
+    <string name="m_s">m/s</string>
+    <string name="c">°C</string>
+    <string name="percent">%</string>
+    <string name="km">km</string>
 </resources>

@@ -11,5 +11,4 @@ class HourlyWeatherDiffUtil : DiffUtil.ItemCallback<HourlyWeather>() {
     override fun areContentsTheSame(oldItem: HourlyWeather, newItem: HourlyWeather): Boolean {
         return newItem == oldItem
     }
-
 }

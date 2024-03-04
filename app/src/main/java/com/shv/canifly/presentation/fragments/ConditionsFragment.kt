@@ -38,7 +38,8 @@ class ConditionsFragment : Fragment() {
     private val daysList: MutableList<MaterialTextView> = mutableListOf()
 
     private var chosenDay: Int = DEFAULT_CHOSEN_DAY
-    private var chosenHour: Int = LocalTime.now().hour
+
+    private var chosenHour: Int = getCurrentHour()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -212,14 +213,19 @@ class ConditionsFragment : Fragment() {
         }
     }
 
+    private fun getCurrentHour() = if (LocalTime.now().minute < 30)
+        LocalTime.now().hour
+    else
+        LocalTime.now().hour + 1
+
     private fun <T> getStringValueWithUnits(
         value: T,
-        measure: String
+        units: String
     ): String {
         return String.format(
             requireContext().getString(R.string.value_with_units),
             value,
-            measure
+            units
         )
     }
 
