@@ -14,10 +14,6 @@ data class WeatherDataDto(
     val timezoneAbbreviation: String,
     @SerializedName("utc_offset_seconds")
     val utcOffsetSeconds: Int,
-    @SerializedName("current")
-    val currentWeatherDto: CurrentWeatherDto,
-    @SerializedName("current_units")
-    val currentWeatherUnitsDto: CurrentWeatherUnitsDto,
     @SerializedName("daily")
     val dailyWeatherDto: DailyWeatherDto,
     @SerializedName("daily_units")

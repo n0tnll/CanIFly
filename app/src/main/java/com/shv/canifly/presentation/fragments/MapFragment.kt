@@ -1,58 +1,69 @@
 package com.shv.canifly.presentation.fragments
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.mapbox.geojson.Point
-import com.mapbox.maps.extension.style.utils.ColorUtils.colorToRgbaString
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.PolygonAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
-import com.mapbox.maps.plugin.annotation.generated.createPolygonAnnotationManager
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.shv.canifly.R
+import com.shv.canifly.databinding.AddZoneDialogBinding
 import com.shv.canifly.databinding.FragmentMapBinding
-import com.shv.canifly.domain.util.FlyfrBasePainter
-import dji.sdk.keyvalue.value.common.LocationCoordinate2D
-import dji.v5.common.callback.CommonCallbacks
-import dji.v5.common.error.IDJIError
-import dji.v5.manager.aircraft.flysafe.FlyZoneManager
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory.AUTHORIZATION
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory.ENHANCED_WARNING
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory.RESTRICTED
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory.WARNING
-import dji.v5.manager.aircraft.flysafe.info.FlyZoneInformation
-import dji.v5.manager.aircraft.flysafe.info.MultiPolygonFlyZoneShape
+import com.shv.canifly.domain.entity.Airport
+import com.shv.canifly.domain.entity.AirportType.BALLOON_PORT
+import com.shv.canifly.domain.entity.AirportType.HELIPORT
+import com.shv.canifly.domain.entity.AirportType.LARGE_AIRPORT
+import com.shv.canifly.domain.entity.AirportType.MEDIUM_AIRPORT
+import com.shv.canifly.domain.entity.AirportType.SEAPLANE_BASE
+import com.shv.canifly.domain.entity.AirportType.SMALL_AIRPORT
+import com.shv.canifly.domain.entity.BadSignalZone
+import com.shv.canifly.domain.util.ResourcesProvider
+import com.shv.canifly.presentation.dialogs.BadSignalInfoBottomSheet
+import com.shv.canifly.presentation.dialogs.NfzInfoBottomSheet
+import com.shv.canifly.presentation.viewmodels.MapViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
-class MapFragment : Fragment() {
+
+@AndroidEntryPoint
+class MapFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickListener,
+    GoogleMap.OnMyLocationClickListener {
 
     private var _binding: FragmentMapBinding? = null
     private val binding: FragmentMapBinding
         get() = _binding ?: throw RuntimeException("FragmentMapBinding is null")
 
-    private val annotationApi by lazy {
-        binding.mapView.annotations
-    }
-    private val polygonAnnotationManager by lazy {
-        annotationApi.createPolygonAnnotationManager()
-    }
-    private val circleAnnotationManager by lazy {
-        annotationApi.createCircleAnnotationManager()
-    }
+    private val viewModel: MapViewModel by viewModels()
 
-    private val painter: FlyfrBasePainter = FlyfrBasePainter()
+    @Inject
+    lateinit var resourcesProvider: ResourcesProvider
+
+    private var currentLocation: Location? = null
+    private var surroundZones = mutableListOf<Airport>()
+    private var badSignalZones = mutableListOf<BadSignalZone>()
+
+    private lateinit var map: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,230 +74,248 @@ class MapFragment : Fragment() {
             container,
             false
         )
+        lifecycleScope.launch {
+            currentLocation = viewModel.getCurrentLocation()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getNFZ()
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+        observeViewModel()
+        viewModel.getNfz()
     }
 
-    private fun getNFZ() {
-        val flyZoneManager = FlyZoneManager.getInstance()
-        val location = LocationCoordinate2D(43.1056, 131.8735)
-        flyZoneManager.getFlyZonesInSurroundingArea(
-            location,
-            object : CommonCallbacks.CompletionCallbackWithParam<List<FlyZoneInformation>> {
-                override fun onSuccess(flyZones: List<FlyZoneInformation>?) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Get surrounding Fly Zones Success!",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    updateFlyZonesOnTheMap(flyZones)
-                    showSurroundFlyZonesInfo(flyZones)
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap ?: return
+        googleMap.setOnMyLocationButtonClickListener(this)
+        googleMap.setOnMyLocationClickListener(this)
+        enableMyLocation()
+        googleMap.setMinZoomPreference(10f)
+        currentLocation?.let {
+            val loc = LatLng(it.latitude, it.longitude)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 10f))
+        }
+        map.setOnCircleClickListener {
+            val clickedZone = surroundZones.find { airport ->
+                it.center.latitude == airport.latitude && it.center.longitude == airport.longitude
+            }
+            clickedZone?.let {
+                val nfzInfoBottomSheet = NfzInfoBottomSheet.newInstance().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(NfzInfoBottomSheet.NFZ_ARG, it)
+                    }
                 }
 
-                override fun onFailure(error: IDJIError) {
-                    Toast.makeText(
-                        requireContext(),
-                        error.description(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                nfzInfoBottomSheet.show(
+                    requireActivity().supportFragmentManager,
+                    NfzInfoBottomSheet.TAG
+                )
+            }
+            val clickedBadZone = badSignalZones.find { badSignalZone ->
+                it.center == badSignalZone.latLng
+            }
+            clickedBadZone?.let {
+                val badSignalInfoBottomSheet = BadSignalInfoBottomSheet.newInstance().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(BadSignalInfoBottomSheet.BAD_SIGNAL_ARG, clickedBadZone)
+                    }
                 }
-            })
+
+                badSignalInfoBottomSheet.show(
+                    requireActivity().supportFragmentManager,
+                    BadSignalInfoBottomSheet.TAG
+                )
+            }
+        }
+        map.setOnMapLongClickListener { latLng ->
+            showAddBadSignalZoneDialog(latLng)
+        }
     }
 
-    private fun updateFlyZonesOnTheMap(flyZones: List<FlyZoneInformation>?) {
-        lifecycleScope.launch {
-            flyZones?.let { zones ->
-                for (flyZone in zones) {
-                    val multiPolygonItems = flyZone.multiPolygonFlyZoneInformation
-                    val itemSize = multiPolygonItems.size
-                    for (i in 0 until itemSize) {
-                        when (multiPolygonItems[i].shape) {
-                            MultiPolygonFlyZoneShape.POLYGON -> {
-                                Log.d(
-                                    "updateFlyZonesOnTheMap",
-                                    "sub polygon points " + i + " size: " + multiPolygonItems[i].polygonPoints.size
-                                )
-                                Log.d(
-                                    "updateFlyZonesOnTheMap",
-                                    "sub polygon points " + i + " category: " + flyZone.category.value()
-                                )
-                                Log.d(
-                                    "updateFlyZonesOnTheMap",
-                                    "sub polygon points " + i + " limit height: " + multiPolygonItems[i].limitedHeight
-                                )
-                                addPolygonMarker(
-                                    multiPolygonItems[i].polygonPoints,
-                                    flyZone.category,
-                                    multiPolygonItems[i].limitedHeight
-                                )
-                            }
+    private fun showAddBadSignalZoneDialog(latLng: LatLng) {
+        val zoneFormView = AddZoneDialogBinding.inflate(LayoutInflater.from(requireContext()))
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resourcesProvider.getString(R.string.add_bad_signal_zone_dialog_title))
+            .setView(zoneFormView.root)
+            .setNegativeButton(resourcesProvider.getString(R.string.dialog_cancel), null)
+            .setPositiveButton(resourcesProvider.getString(R.string.dialog_add)) { dialog, _ ->
+                val description = zoneFormView.etDescription.text.toString()
+                val radius = zoneFormView.etRadius.text.toString().toDouble()
+                badSignalZones.add(
+                    BadSignalZone(
+                        description = description,
+                        radius = radius.toInt(),
+                        latLng = latLng
+                    )
+                )
+                val circleOption = CircleOptions()
+                    .center(latLng)
+                    .radius(radius)
+                    .strokeWidth(5f)
+                    .strokeColor(resourcesProvider.getColor(R.color.bad_signal))
+                    .fillColor(resourcesProvider.getColorWithAlpha(R.color.bad_signal))
+                    .clickable(true)
 
-                            MultiPolygonFlyZoneShape.CYLINDER -> {
-                                val tmpPos = multiPolygonItems[i].cylinderCenter
-                                val subRadius = multiPolygonItems[i].cylinderRadius
+                map.addCircle(circleOption)
+                dialog.dismiss()
+            }
+            .show()
+    }
 
-                                Log.d(
-                                    "updateFlyZonesOnTheMap",
-                                    "sub circle points " + i + " coordinate: " + tmpPos.latitude + "," + tmpPos.longitude
-                                )
-                                Log.d(
-                                    "updateFlyZonesOnTheMap",
-                                    "sub circle points $i radius: $subRadius"
-                                )
+//    Mavic 3 classic, without FCC & 5.8 GHz
 
-                                val circleAnnotationOptions = CircleAnnotationOptions()
-                                    .withPoint(Point.fromLngLat(tmpPos.longitude, tmpPos.latitude))
-                                    .withCircleRadius(subRadius)
-                                    .withCircleOpacity(.5)
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(requireContext(), "MyLocation button clicked", Toast.LENGTH_SHORT).show()
+        return false
+    }
 
-                                when (flyZone.category) {
-                                    WARNING -> circleAnnotationOptions.withCircleColor(
-                                        Color.parseColor(
-                                            "#00FF007D"
-                                        )
-                                    )
+    override fun onMyLocationClick(location: Location) {
+        Toast.makeText(requireContext(), "Current location:\n$location", Toast.LENGTH_LONG).show()
+    }
 
-                                    AUTHORIZATION -> circleAnnotationOptions.withCircleColor(
-                                        Color.parseColor(
-                                            "#ff00007D"
-                                        )
-                                    )
+    private fun enableMyLocation() {
+        if (!::map.isInitialized) return
+        val hasAccessLocationPermissions = arrayListOf(
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        ).any {
+            it == PackageManager.PERMISSION_GRANTED
+        }
 
-                                    RESTRICTED -> circleAnnotationOptions.withCircleColor(
-                                        Color.parseColor(
-                                            "#ff00007D"
-                                        )
-                                    )
+        if (hasAccessLocationPermissions) {
+            map.isMyLocationEnabled = true
+        } else return
+    }
 
-                                    ENHANCED_WARNING -> circleAnnotationOptions.withCircleColor(
-                                        Color.parseColor("#0000FF7D")
-                                    )
 
-                                    else -> {}
-                                }
-
-                                circleAnnotationManager.create(circleAnnotationOptions)
-                            }
-
-                            else -> {
-                                val circleAnnotationOptions = CircleAnnotationOptions()
-                                    .withPoint(
-                                        Point.fromLngLat(
-                                            flyZone.circleCenter.longitude,
-                                            flyZone.circleCenter.latitude
-                                        )
-                                    )
-                                    .withCircleRadius(flyZone.circleRadius)
-                                    .withCircleOpacity(.5)
-                                when (flyZone.category) {
-                                    WARNING -> circleAnnotationOptions.withCircleColor(
-                                        colorToRgbaString(Color.GREEN)
-                                    )
-
-                                    ENHANCED_WARNING -> circleAnnotationOptions.withCircleStrokeColor(
-                                        colorToRgbaString(Color.BLUE)
-                                    )
-
-                                    AUTHORIZATION -> {
-                                        circleAnnotationOptions.withCircleStrokeColor(
-                                            colorToRgbaString(Color.YELLOW)
-                                        )
-                                    }
-
-                                    RESTRICTED -> circleAnnotationOptions.withCircleStrokeColor(
-                                        colorToRgbaString(Color.RED)
-                                    )
-
-                                    else -> {
-                                    }
-                                }
-                            }
-                        }
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.state.collect {
+                    it.nfzList?.let { nfzList ->
+                        showNfz(nfzList)
+                    }
+                    it.error?.let { errorMsg ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Error: $errorMsg",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         }
     }
 
-    private fun showSurroundFlyZonesInfo(
-        flyZones: List<FlyZoneInformation>?
-    ) {
-        val sb = StringBuffer()
-        flyZones?.let { zones ->
-            for (zone in zones) {
-                val mp = zone.multiPolygonFlyZoneInformation
-                sb.append("Category: ").append(zone.category.name).append("\n")
-                sb.append("Latitude: ").append(zone.circleCenter.latitude).append("\n")
-                sb.append("Longitude: ").append(zone.circleCenter.longitude).append("\n")
-                sb.append("FlyZoneType: ").append(zone.flyZoneType.name).append("\n")
-                sb.append("Radius: ").append(zone.circleRadius).append("\n")
-                sb.append("Max height: ").append().append("\n")
-                sb.append("Name: ").append(zone.name).append("\n")
+
+    private fun showNfz(nfzList: List<Airport>) {
+        surroundZones.addAll(getSurroundZones(nfzList))
+        for (nfz in surroundZones) {
+            addCircleNfz(nfz)
+        }
+    }
+
+    private fun getSurroundZones(nfzList: List<Airport>): List<Airport> {
+        val loc = currentLocation ?: throw RuntimeException("current location is null")
+        return nfzList.filter {
+            val distance = distanceBetween(
+                loc.latitude,
+                loc.longitude,
+                it.latitude,
+                it.longitude
+            )
+            distance <= RADIUS
+        }
+    }
+
+    private fun addCircleNfz(airport: Airport) {
+        var fillColor = 0
+        var strokeColor = 0
+
+        when (airport.type) {
+            LARGE_AIRPORT -> {
+                strokeColor = resourcesProvider.getColor(R.color.large_airport)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.large_airport)
+            }
+
+            MEDIUM_AIRPORT -> {
+                strokeColor = resourcesProvider.getColor(R.color.medium_airport)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.medium_airport)
+            }
+
+            SMALL_AIRPORT -> {
+                strokeColor = resourcesProvider.getColor(R.color.small_airport)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.small_airport)
+            }
+
+            HELIPORT -> {
+                strokeColor = resourcesProvider.getColor(R.color.heliport)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.heliport)
+            }
+
+            SEAPLANE_BASE -> {
+                strokeColor = resourcesProvider.getColor(R.color.seaplane_base)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.seaplane_base)
+            }
+
+            BALLOON_PORT -> {
+                strokeColor = resourcesProvider.getColor(R.color.balloon_port)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.balloon_port)
+            }
+
+            null -> {
+                strokeColor = resourcesProvider.getColor(R.color.large_airport)
+                fillColor = resourcesProvider.getColorWithAlpha(R.color.large_airport)
             }
         }
-        binding.tvFlyZoneInfo.text = sb.toString()
+
+        val circleOption = CircleOptions()
+            .center(LatLng(airport.latitude, airport.longitude))
+            .radius(airport.type?.nfzRadius ?: 1000.0)
+            .strokeWidth(5f)
+            .strokeColor(strokeColor)
+            .fillColor(fillColor)
+            .clickable(true)
+
+        map.addCircle(circleOption)
     }
 
-    private fun addPolygonMarker(
-        polygonPoints: List<LocationCoordinate2D>?,
-        flyZoneCategory: FlyZoneCategory,
-        height: Int
-    ) {
-        if (polygonPoints == null)
-            return
-
-        val shape = mutableListOf<MutableList<Point>>()
-        val points = mutableListOf<Point>()
-        for (point in polygonPoints) {
-            points.add(Point.fromLngLat(point.longitude, point.latitude))
-        }
-        shape.add(points)
-
-        var fillColor = "#78FF00"
-        var fillOpacity = .5
-
-        if (painter.heightToColor[height] != null) {
-            painter.heightToColor[height]?.let {
-                fillOpacity = it.toDouble()
-            }
-        } else if (flyZoneCategory == AUTHORIZATION) {
-            fillColor = "#28FFFF"
-        } else if (flyZoneCategory == ENHANCED_WARNING || flyZoneCategory == WARNING) {
-            fillColor = "#0d1eff"
-        }
-
-
-        val polygonAnnotationOptions = PolygonAnnotationOptions()
-            .withPoints(shape)
-            .withFillColor(fillColor)
-            .withFillOpacity(fillOpacity)
-
-        polygonAnnotationManager.create(polygonAnnotationOptions)
+    private fun distanceBetween(
+        lat1: Double,
+        lon1: Double,
+        lat2: Double,
+        lon2: Double
+    ): Double {
+        val earthRadius = 6371000
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a =
+            sin(dLat / 2) * sin(dLat / 2) + cos(Math.toRadians(lat1)) * cos(
+                Math.toRadians(
+                    lat2
+                )
+            ) * sin(
+                dLon / 2
+            ) * sin(dLon / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return earthRadius * c
     }
-
-
-    private fun bitmapFromDrawableRes(context: Context, @DrawableRes resId: Int): Bitmap? {
-        val constantState =
-            AppCompatResources.getDrawable(context, resId)?.constantState ?: return null
-        val drawable = constantState.newDrawable().mutate()
-        val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width / 4, canvas.height / 4)
-        drawable.draw(canvas)
-        return bitmap
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        private const val RADIUS = 50_000
     }
 }

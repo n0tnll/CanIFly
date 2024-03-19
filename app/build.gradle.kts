@@ -5,6 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -14,68 +15,12 @@ android {
     defaultConfig {
         applicationId = "com.shv.canifly"
         minSdk = 27
-        targetSdk = 31
+        targetSdk = 34
         multiDexEnabled = true
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        packaging {
-            resources {
-                excludes.add("lib/arm64-v8a/libc++_shared.so")
-            }
-        }
-
-        ndk {
-            abiFilters.add("arm64-v8a") // MSDK only supports arm64-v8a architecture
-        }
-
-        packaging {
-            resources {
-                pickFirsts.add("lib/arm64-v8a/libc++_shared.so")
-                pickFirsts.add("lib/armeabi-v7a/libc++_shared.so")
-                pickFirsts.add("lib/x86/libc++_shared.so")
-                pickFirsts.add("lib/x86_64/libjsc.so")
-                pickFirsts.add("lib/arm64-v8a/libjsc.so")
-                pickFirsts.add("lib/x86_64/libc++_shared.so")
-            }
-        }
-
-        sourceSets.getByName("main") {
-            jniLibs.setSrcDirs(listOf("src/main/cpp/libs"))
-        }
-
-        packaging {
-            jniLibs.keepDebugSymbols.add("*/*/libconstants.so")
-            jniLibs.keepDebugSymbols.add("*/*/libdji_innertools.so")
-            jniLibs.keepDebugSymbols.add("*/*/libdjibase.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJICSDKCommon.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJIFlySafeCore-CSDK.so")
-            jniLibs.keepDebugSymbols.add("*/*/libdjifs_jni-CSDK.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJIRegister.so")
-            jniLibs.keepDebugSymbols.add("*/*/libdjisdk_jni.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJIUpgradeCore.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJIUpgradeJNI.so")
-            jniLibs.keepDebugSymbols.add("*/*/libDJIWaypointV2Core-CSDK.so")
-            jniLibs.keepDebugSymbols.add("*/*/libdjiwpv2-CSDK.so")
-            jniLibs.keepDebugSymbols.add("*/*/libFlightRecordEngine.so")
-            jniLibs.keepDebugSymbols.add("*/*/libvideo-framing.so")
-            jniLibs.keepDebugSymbols.add("*/*/libwaes.so")
-            jniLibs.keepDebugSymbols.add("*/*/libagora-rtsa-sdk.so")
-            jniLibs.keepDebugSymbols.add("*/*/libc++.so")
-            jniLibs.keepDebugSymbols.add("*/*/libc++_shared.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_28181.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_agora.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_core.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_core_jni.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_data.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_log.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_onvif.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_rtmp.so")
-            jniLibs.keepDebugSymbols.add("*/*/libmrtc_rtsp.so")
-        }
-
     }
 
     buildTypes {
@@ -97,6 +42,20 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    secrets {
+        // Optionally specify a different file name containing your secrets.
+        // The plugin defaults to "local.properties"
+        propertiesFileName = "secrets.properties"
+
+        // A properties file containing default secret values. This file can be
+        // checked in version control.
+        defaultPropertiesFileName = "local.defaults.properties"
+
+        // Configure which keys should be ignored by the plugin by providing regular expressions.
+        // "sdk.dir" is ignored by default.
+        ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+        ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+    }
 }
 
 dependencies {
@@ -106,20 +65,22 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
-    val lifecycle_version = "2.7.0"
+    val lifecycleVersion = "2.7.0"
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     val roomVersion = "2.6.1"
 
@@ -127,27 +88,23 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
-    implementation("io.coil-kt:coil:2.3.0")
+    implementation("io.coil-kt:coil:2.6.0")
 
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
-    implementation("com.google.dagger:hilt-android:2.50")
-    ksp("com.google.dagger:hilt-android-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.51")
+    ksp("com.google.dagger:hilt-android-compiler:2.51")
 
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
 
     val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
-    implementation("androidx.multidex:multidex:2.0.1")
-    //mapbox
-    implementation("com.mapbox.maps:android:11.1.0")
-    //dji
-    implementation("com.dji:dji-sdk-v5-aircraft:5.8.0")
-    compileOnly("com.dji:dji-sdk-v5-aircraft-provided:5.8.0")
-    implementation("com.dji:dji-sdk-v5-networkImp:5.8.0")
+    //csv
+    implementation("org.apache.commons:commons-csv:1.10.0")
 }

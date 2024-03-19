@@ -1,9 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Can I Fly</string>
-    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">
-        pk.eyJ1IjoiZW5kbm90ZTEwNDciLCJhIjoiY2xzM3ozemoxMTFyNDJrbnF2aDNoY3R5aiJ9.ZPl8Hj2BQzWQjfV0tGSf-A
-    </string>
-    
     <string name="value_with_units">%s %s</string>
     <string name="high_low_temp">High: %s / Low: %s</string>
     <string name="high_low_temp_short">%s°/%s°</string>
@@ -38,4 +34,11 @@
     <string name="c">°C</string>
     <string name="percent">%</string>
     <string name="km">km</string>
+    <string name="map">Map</string>
+    <string name="forecast">Forecast</string>
+    <string name="watching_date">Watching date</string>
+    <string name="add_bad_signal_zone_dialog_title">Add bad signal zone</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_add">Add</string>
+    <string name="bad_signal_title">Bad signal zone</string>
 </resources>

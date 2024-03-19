@@ -213,10 +213,16 @@ class ConditionsFragment : Fragment() {
         }
     }
 
-    private fun getCurrentHour() = if (LocalTime.now().minute < 30)
-        LocalTime.now().hour
-    else
-        LocalTime.now().hour + 1
+    private fun getCurrentHour(): Int {
+        return if (LocalTime.now().minute < 30)
+            LocalTime.now().hour
+        else {
+            if (LocalTime.now().hour + 1 != 24)
+                LocalTime.now().hour + 1
+            else
+                LocalTime.now().hour
+        }
+    }
 
     private fun <T> getStringValueWithUnits(
         value: T,

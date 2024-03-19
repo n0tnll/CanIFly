@@ -1,9 +1,9 @@
-package com.shv.canifly.di.modules
+package com.shv.canifly.di
 
 import com.shv.canifly.data.location.DefaultLocationTracker
-import com.shv.canifly.data.repository.WeatherRepositoryImpl
+import com.shv.canifly.data.repository.RepositoryImpl
 import com.shv.canifly.domain.location.LocationTracker
-import com.shv.canifly.domain.repository.WeatherRepository
+import com.shv.canifly.domain.repository.Repository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ interface DomainModule {
 
     @Binds
     @Singleton
-    fun bindWeatherRepository(impl: WeatherRepositoryImpl): WeatherRepository
+    fun bindWeatherRepository(impl: RepositoryImpl): Repository
 
     @Binds
     @Singleton

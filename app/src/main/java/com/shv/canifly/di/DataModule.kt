@@ -1,10 +1,10 @@
-package com.shv.canifly.di.modules
+package com.shv.canifly.di
 
 import android.app.Application
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.shv.canifly.data.network.api.ApiFactory
-import com.shv.canifly.data.network.api.WeatherApiService
+import com.shv.canifly.data.network.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ interface DataModule {
     companion object {
         @Provides
         @Singleton
-        fun provideWeatherApiService(): WeatherApiService {
+        fun provideWeatherApiService(): ApiService {
             return ApiFactory.weatherApiService
         }
 
