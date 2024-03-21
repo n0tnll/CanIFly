@@ -5,6 +5,7 @@ import com.shv.canifly.data.mapper.toWeatherInfo
 import com.shv.canifly.data.network.api.ApiFactory
 import com.shv.canifly.data.network.api.ApiService
 import com.shv.canifly.domain.entity.Airport
+import com.shv.canifly.domain.entity.WatchingDate
 import com.shv.canifly.domain.entity.WeatherInfo
 import com.shv.canifly.domain.repository.Repository
 import com.shv.canifly.domain.util.Resource
@@ -44,5 +45,9 @@ class RepositoryImpl @Inject constructor(
             e.printStackTrace()
             Resource.Error(e.message ?: "getNfzData(): An unknown error occurred.")
         }
+    }
+
+    override suspend fun addWatchingDate(watchingDate: WatchingDate) {
+        TODO("Not yet implemented")
     }
 }

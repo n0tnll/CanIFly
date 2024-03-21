@@ -4,8 +4,10 @@ import android.content.Context
 import com.shv.canifly.R
 import com.shv.canifly.domain.entity.DailyWeather
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -13,6 +15,15 @@ fun LocalDateTime.toTimeString(): String {
     return format(
         DateTimeFormatter.ofPattern(
             "HH:mm",
+            Locale.getDefault()
+        )
+    )
+}
+
+fun LocalDateTime.toDateString(): String {
+    return format(
+        DateTimeFormatter.ofPattern(
+            "yyyy.MM.dd",
             Locale.getDefault()
         )
     )
@@ -34,6 +45,10 @@ fun LocalDate.detailedDayString(): String {
             Locale.getDefault()
         )
     )
+}
+
+fun Long.toLocalDate(): LocalDate {
+    return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
 fun DayOfWeek.toNormalDayName(): String {

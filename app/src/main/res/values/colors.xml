@@ -9,4 +9,7 @@
     <color name="seaplane_base">#00BCD4</color>
     <color name="balloon_port">#5D6061</color>
     <color name="bad_signal">#E91E3C</color>
+    <color name="good_to_fly">#3FD845</color>
+    <color name="no_good_to_fly">#D5074D</color>
+    <color name="attention_to_fly">#FBE51B</color>
 </resources>

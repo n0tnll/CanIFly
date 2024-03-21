@@ -41,4 +41,10 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add">Add</string>
     <string name="bad_signal_title">Bad signal zone</string>
+    <string name="button_add_watching_date_descr">Button add watching date</string>
+    <string name="wind_value">Wind: %s m/s</string>
+    <string name="gusts_value">Gusts: %s m/s</string>
+    <string name="select_fly_date">Choose a day for flying</string>
+    <string name="select_fly_time">Select flight times</string>
+    <string name="feels_like">Feels like: %s°C</string>
 </resources>

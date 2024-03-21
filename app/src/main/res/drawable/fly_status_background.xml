@@ -2,11 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <corners android:radius="4dp" />
-    <solid android:color="@color/black" />
-    <stroke
-        android:width="1dp"
-        android:color="@android:color/darker_gray" />
+    <corners android:radius="16dp" />
+    <solid android:color="@color/good_to_fly" />
     <size
         android:width="36dp"
         android:height="36dp" />

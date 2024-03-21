@@ -89,7 +89,7 @@ fun WeatherDataDto.mapHourlyWeatherMap(): Map<Int, List<HourlyWeather>> {
                 temperature500m = temperature500m,
                 temperature800m = temperature800m,
                 temperature1000m = temperature1000m,
-                apparentTemperature = apparentTemperature,
+                feelsLikeTemp = apparentTemperature,
                 precipitationProbability = precipitationProbability,
                 precipitation = precipitation,
                 windSpeed10m = windSpeed10m,

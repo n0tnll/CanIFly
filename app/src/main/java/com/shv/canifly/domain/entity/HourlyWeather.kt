@@ -10,7 +10,7 @@ data class HourlyWeather(
     val temperature500m: Double,
     val temperature800m: Double,
     val temperature1000m: Double,
-    val apparentTemperature: Double,
+    val feelsLikeTemp: Double,
     val precipitationProbability: Int,
     val precipitation: Double,
     val windSpeed10m: Double,
