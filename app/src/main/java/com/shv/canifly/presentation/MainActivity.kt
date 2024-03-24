@@ -2,16 +2,20 @@ package com.shv.canifly.presentation
 
 import android.Manifest
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.shv.canifly.R
 import com.shv.canifly.databinding.ActivityMainBinding
 import com.shv.canifly.presentation.viewmodels.WeatherConditionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -26,7 +30,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        lifecycleScope.launch {
+            binding.bottomNavigation.visibility = View.GONE
+            delay(3000)
+            binding.bottomNavigation.visibility = View.VISIBLE
+        }
         requestLocationPermission()
         setupBottomNavigation()
     }

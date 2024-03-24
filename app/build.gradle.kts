@@ -78,9 +78,9 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.10.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.10.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.10.0")
 
     val roomVersion = "2.6.1"
 
@@ -107,4 +107,7 @@ dependencies {
 
     //csv
     implementation("org.apache.commons:commons-csv:1.10.0")
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/conditionsFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/conditionsFragment"
@@ -25,4 +25,13 @@
         android:name="com.shv.canifly.presentation.fragments.WatchingDateFragment"
         android:label="fragment_watching_date"
         tools:layout="@layout/fragment_watching_date" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.shv.canifly.presentation.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/navigate_splashFragment_to_conditionsFragment"
+            app:destination="@id/conditionsFragment" />
+    </fragment>
 </navigation>

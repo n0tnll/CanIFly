@@ -47,4 +47,5 @@
     <string name="select_fly_date">Choose a day for flying</string>
     <string name="select_fly_time">Select flight times</string>
     <string name="feels_like">Feels like: %s°C</string>
+    <string name="app_icon">App icon</string>
 </resources>
