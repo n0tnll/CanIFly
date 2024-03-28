@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation.fragments
+package com.shv.canifly.presentation.screens.favorites
 
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -21,7 +21,7 @@ import com.shv.canifly.databinding.FragmentWatchingDateBinding
 import com.shv.canifly.domain.entity.HourlyWeather
 import com.shv.canifly.domain.entity.WatchingDate
 import com.shv.canifly.presentation.adapters.WatchingDateAdapter
-import com.shv.canifly.presentation.viewmodels.WeatherConditionsViewModel
+import com.shv.canifly.presentation.screens.WeatherConditionsViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime

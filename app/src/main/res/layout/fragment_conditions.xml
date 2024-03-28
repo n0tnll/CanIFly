@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.ConditionsFragment">
+    tools:context=".presentation.screens.conditions.ConditionsFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_fly_status"
@@ -422,13 +422,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_weather_condition_cloud_cover" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_daylight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Здесь типа световой день нарисован будет"
-        app:layout_constraintTop_toBottomOf="@id/tv_nfz_nearby" />
-
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_time"
         android:layout_width="match_parent"
@@ -439,7 +432,7 @@
         android:valueTo="23"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_daylight" />
+        app:layout_constraintTop_toBottomOf="@id/tv_nfz_nearby" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

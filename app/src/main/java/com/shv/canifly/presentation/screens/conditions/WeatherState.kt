@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation
+package com.shv.canifly.presentation.screens.conditions
 
 import com.shv.canifly.domain.entity.WeatherInfo
 

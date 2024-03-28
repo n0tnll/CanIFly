@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation.fragments
+package com.shv.canifly.presentation.screens.map
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -36,7 +36,6 @@ import com.shv.canifly.domain.entity.BadSignalZone
 import com.shv.canifly.domain.util.ResourcesProvider
 import com.shv.canifly.presentation.dialogs.BadSignalInfoBottomSheet
 import com.shv.canifly.presentation.dialogs.NfzInfoBottomSheet
-import com.shv.canifly.presentation.viewmodels.MapViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -89,7 +88,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickListe
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap ?: return
+        map = googleMap
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()

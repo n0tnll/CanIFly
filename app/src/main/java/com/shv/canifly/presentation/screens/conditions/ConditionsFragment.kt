@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation.fragments
+package com.shv.canifly.presentation.screens.conditions
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.shv.canifly.domain.entity.DailyWeather
 import com.shv.canifly.domain.entity.HourlyWeather
 import com.shv.canifly.domain.entity.WeatherInfo
 import com.shv.canifly.domain.entity.WeatherUnits
-import com.shv.canifly.presentation.viewmodels.WeatherConditionsViewModel
+import com.shv.canifly.presentation.screens.WeatherConditionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

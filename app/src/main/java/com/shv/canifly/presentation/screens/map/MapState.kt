@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation
+package com.shv.canifly.presentation.screens.map
 
 import com.shv.canifly.domain.entity.Airport
 

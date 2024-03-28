@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation.fragments
+package com.shv.canifly.presentation.screens.forecast
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.shv.canifly.databinding.FragmentForecastBinding
 import com.shv.canifly.presentation.adapters.DailyWeatherAdapter
-import com.shv.canifly.presentation.viewmodels.WeatherConditionsViewModel
+import com.shv.canifly.presentation.screens.WeatherConditionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

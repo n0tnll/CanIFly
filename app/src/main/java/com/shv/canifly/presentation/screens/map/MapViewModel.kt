@@ -1,4 +1,4 @@
-package com.shv.canifly.presentation.viewmodels
+package com.shv.canifly.presentation.screens.map
 
 import android.location.Location
 import android.util.Log
@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.shv.canifly.domain.location.LocationTracker
 import com.shv.canifly.domain.usecases.GetNfzDataUseCase
 import com.shv.canifly.domain.util.Resource
-import com.shv.canifly.presentation.MapState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow

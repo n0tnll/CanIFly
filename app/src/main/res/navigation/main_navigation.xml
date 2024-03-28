@@ -7,24 +7,39 @@
 
     <fragment
         android:id="@+id/conditionsFragment"
-        android:name="com.shv.canifly.presentation.fragments.ConditionsFragment"
+        android:name="com.shv.canifly.presentation.screens.conditions.ConditionsFragment"
         android:label="fragment_conditions"
         tools:layout="@layout/fragment_conditions" />
     <fragment
         android:id="@+id/forecastFragment"
-        android:name="com.shv.canifly.presentation.fragments.ForecastFragment"
+        android:name="com.shv.canifly.presentation.screens.forecast.ForecastFragment"
         android:label="fragment_forecast"
-        tools:layout="@layout/fragment_forecast" />
+        tools:layout="@layout/fragment_forecast" >
+        <action
+            android:id="@+id/action_forecastFragment_pop_including_conditionsFragment"
+            app:popUpTo="@id/forecastFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.shv.canifly.presentation.fragments.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_conditionsFragment"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/watchingDateFragment"
-        android:name="com.shv.canifly.presentation.fragments.WatchingDateFragment"
+        android:name="com.shv.canifly.presentation.screens.favorites.WatchingDateFragment"
         android:label="fragment_watching_date"
-        tools:layout="@layout/fragment_watching_date" />
+        tools:layout="@layout/fragment_watching_date" >
+        <action
+            android:id="@+id/action_watchingDateFragment_pop_including_conditionsFragment"
+            app:popUpTo="@id/watchingDateFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/watchingDateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.shv.canifly.presentation.SplashFragment"
@@ -32,6 +47,24 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/navigate_splashFragment_to_conditionsFragment"
-            app:destination="@id/conditionsFragment" />
+            app:destination="@id/conditionsFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.shv.canifly.presentation.onboarding.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding" >
+        <action
+            android:id="@+id/action_onBoardingFragment_to_conditionsFragment"
+            app:destination="@id/conditionsFragment"
+            app:popUpTo="@id/onBoardingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

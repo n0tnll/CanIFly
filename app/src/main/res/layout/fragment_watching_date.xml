@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".presentation.fragments.WatchingDateFragment">
+    tools:context=".presentation.screens.favorites.WatchingDateFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_watching_dates"
@@ -45,7 +45,8 @@
             android:id="@+id/imv_empty_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_list" />
+            android:src="@drawable/ic_empty_list"
+            android:contentDescription="@string/empty_list_image" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_no_reminders"

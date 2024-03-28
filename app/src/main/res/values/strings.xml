@@ -48,4 +48,22 @@
     <string name="select_fly_time">Select flight times</string>
     <string name="feels_like">Feels like: %s°C</string>
     <string name="app_icon">App icon</string>
+    <string name="features_items">• hourly forecast\n• daily forecast\n• map with NFZ\n• ability to
+        add areas with poor communication to the map\n• adding date and time to observe weather
+        conditions\n• we\'ll tell you if the weather conditions are suitable for flights</string>
+    <string name="location_hint">You\’ll need to enable your location in order to use this app.</string>
+    <string name="where_are_you">Where are you?</string>
+    <string name="next">Next</string>
+    <string name="what_drone_do_you_fly">What drone do you fly?</string>
+    <string name="finish">Finish</string>
+    <string name="get_notified">Get notified!</string>
+    <string name="get_notification_about_selected_date">Get notification about selected date!</string>
+    <string name="allow_location_permission">Allow location permission</string>
+    <string name="allow_notification_permission">Allow notification permission</string>
+    <string name="welcome_image">Welcome image</string>
+    <string name="welcome_to_can_i_fly_app">Welcome to Can I Fly app</string>
+    <string name="features">Features:</string>
+    <string name="location_image">Location image</string>
+    <string name="notification_image">Notification image</string>
+    <string name="empty_list_image">Empty list image</string>
 </resources>

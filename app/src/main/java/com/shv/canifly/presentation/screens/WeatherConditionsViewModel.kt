@@ -1,17 +1,16 @@
-package com.shv.canifly.presentation.viewmodels
+package com.shv.canifly.presentation.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shv.canifly.domain.location.LocationTracker
 import com.shv.canifly.domain.usecases.GetWeatherDataUseCase
 import com.shv.canifly.domain.util.Resource
-import com.shv.canifly.presentation.WeatherState
+import com.shv.canifly.presentation.screens.conditions.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class WeatherConditionsViewModel @Inject constructor(

@@ -1,0 +1,92 @@
+[
+  {
+    "manufacturer": "DJI",
+    "model": "Mini 4/3 Pro, 3",
+    "maxWindSpeedResistance": "10.7",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Mini 2/2SE/1/SE",
+    "maxWindSpeedResistance": "8.5-10.5",
+    "operatingTemperature": "0-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Avata",
+    "maxWindSpeedResistance": "10.7",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "FPV",
+    "maxWindSpeedResistance": "11.2–13.9",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Air 3",
+    "maxWindSpeedResistance": "12",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Air 2S",
+    "maxWindSpeedResistance": "10.7",
+    "operatingTemperature": "0-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Air 2/1",
+    "maxWindSpeedResistance": "8.5-10.5",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Mavic 3",
+    "maxWindSpeedResistance": "12",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Mavic 2/Mavic Pro",
+    "maxWindSpeedResistance": "8-10.5",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Inspire 3",
+    "maxWindSpeedResistance": "12-14",
+    "operatingTemperature": "-20-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Inspire 2",
+    "maxWindSpeedResistance": "10",
+    "operatingTemperature": "-20-40"
+  },
+  {
+    "manufacturer": "DJI",
+    "model": "Inspire 1",
+    "maxWindSpeedResistance": "10",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "Autel",
+    "model": "EVO II",
+    "maxWindSpeedResistance": "17.4 – 20.6",
+    "operatingTemperature": "-10-40"
+  },
+  {
+    "manufacturer": "Autel",
+    "model": "EVO lite",
+    "maxWindSpeedResistance": "14.3 – 17",
+    "operatingTemperature": "0-40"
+  },
+  {
+    "manufacturer": "Autel",
+    "model": "EVO Nano",
+    "maxWindSpeedResistance": "8.5 – 10.7",
+    "operatingTemperature": "0-40"
+  }
+]
